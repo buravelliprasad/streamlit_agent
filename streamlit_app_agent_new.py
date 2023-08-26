@@ -19,9 +19,9 @@ from google.oauth2 import service_account
 import base64
 from datetime import datetime
 from pytz import timezone
-# os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
+os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
 st.image("socialai.jpg")
-file = r'C:\Users\Prasad\Desktop\Streamlit_ai\1_inventry.csv'
+file = r'1_inventry.csv'
 loader = CSVLoader(file_path=file)
 docs = loader.load()
 embeddings = OpenAIEmbeddings()
@@ -39,39 +39,28 @@ if 'past' not in st.session_state:
 # Initialize user name in session state
 if 'user_name' not in st.session_state:
     st.session_state.user_name = None
-# def save_chat_to_google_sheets(user_name, user_input, output, timestamp):
-#     try:
-#         # Connect to Google Sheets using service account credentials
-#         credentials = service_account.Credentials.from_service_account_info(
-#             st.secrets["gcp_service_account"],
-#             scopes=["https://www.googleapis.com/auth/spreadsheets"],
-#         )
-#         gc = gspread.authorize(credentials)
+def save_chat_to_google_sheets(user_name, user_input, output, timestamp):
+    try:
+        # Connect to Google Sheets using service account credentials
+        credentials = service_account.Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"],
+            scopes=["https://www.googleapis.com/auth/spreadsheets"],
+        )
+        gc = gspread.authorize(credentials)
         
-#         # Get the Google Sheet by URL
-#         sheet_url = st.secrets["public_gsheets_url"]
-#         sheet = gc.open_by_url(sheet_url)
+        # Get the Google Sheet by URL
+        sheet_url = st.secrets["public_gsheets_url"]
+        sheet = gc.open_by_url(sheet_url)
         
-#         # Select the desired worksheet
-#         worksheet = sheet.get_worksheet(0)  # Replace 0 with the index of your desired worksheet
+        # Select the desired worksheet
+        worksheet = sheet.get_worksheet(0)  # Replace 0 with the index of your desired worksheet
     
-#         data = [timestamp, user_name, user_input, output]
-#         worksheet.append_row(data)
-#         # st.success("Data saved to Google Sheets!")
-#     except Exception as e:
-#         st.error(f"Error saving data to Google Sheets: {str(e)}")
+        data = [timestamp, user_name, user_input, output]
+        worksheet.append_row(data)
+        # st.success("Data saved to Google Sheets!")
+    except Exception as e:
+        st.error(f"Error saving data to Google Sheets: {str(e)}")
         
-# Initialize conversation history with intro_prompt
-# custom_template = """You are a business development manager role \
-# working in a car dealership you get a text enquiry regarding inventry, business details and finance. 
-# Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question. 
-# At the end of standalone question add this 'You should answer in a style that is American English in a calm and respectful tone.' 
-# If you do not know the answer reply with 'I am sorry'.
-# Chat History:
-# {chat_history}
-# Follow Up Input: {question}
-# Standalone question:"""
-# CUSTOM_QUESTION_PROMPT = PromptTemplate.from_template(custom_template)
 # Model details
 tool = create_retriever_tool(
     retriever, 
@@ -166,10 +155,10 @@ with container:
                 message(query, is_user=True, key=f"{i}_user", avatar_style="big-smile")
                 message(answer, key=f"{i}_answer", avatar_style="thumbs")
         
-        # Save conversation to Google Sheets along with user name and UTC timestamp
-        # if st.session_state.user_name:
-        #     try:
-        #         save_chat_to_google_sheets(st.session_state.user_name, user_input, output, utc_now.strftime('%Y-%m-%d-%H-%M-%S'))
-        #     except Exception as e:
-        #         st.error(f"An error occurred: {e}")
-        #     # save_chat_to_google_sheets(st.session_state.user_name, user_input, output, utc_now.strftime('%Y-%m-%d-%H-%M-%S'))
+        Save conversation to Google Sheets along with user name and UTC timestamp
+        if st.session_state.user_name:
+            try:
+                save_chat_to_google_sheets(st.session_state.user_name, user_input, output, utc_now.strftime('%Y-%m-%d-%H-%M-%S'))
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+            # save_chat_to_google_sheets(st.session_state.user_name, user_input, output, utc_now.strftime('%Y-%m-%d-%H-%M-%S'))
