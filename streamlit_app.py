@@ -155,7 +155,7 @@ with container:
                 message(query, is_user=True, key=f"{i}_user", avatar_style="big-smile")
                 message(answer, key=f"{i}_answer", avatar_style="thumbs")
         
-        Save conversation to Google Sheets along with user name and UTC timestamp
+        # Save conversation to Google Sheets along with user name and UTC timestamp
         if st.session_state.user_name:
             try:
                 save_chat_to_google_sheets(st.session_state.user_name, user_input, output, utc_now.strftime('%Y-%m-%d-%H-%M-%S'))
