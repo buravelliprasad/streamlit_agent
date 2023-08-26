@@ -21,7 +21,7 @@ from datetime import datetime
 from pytz import timezone
 os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
 st.image("socialai.jpg")
-file = r'1_inventry.csv'
+file = r'dealer_1_inventry.csv'
 loader = CSVLoader(file_path=file)
 docs = loader.load()
 embeddings = OpenAIEmbeddings()
