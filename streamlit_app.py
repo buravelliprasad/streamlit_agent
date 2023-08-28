@@ -58,9 +58,8 @@ def save_chat_to_google_sheets(user_name, user_input, output, timestamp):
         data = [timestamp, user_name, user_input, output]
         worksheet.append_row(data)
         # st.success("Data saved to Google Sheets!")
-  #   except Exception as e:
-  #        # st.error(f" Error saving data to Google Sheets: {str(e)}")
-	 # st.error(f"")    
+    # except Exception as e:
+    #      st.error(f" Error saving data to Google Sheets: {str(e)}")
         
 # Model details
 tool = create_retriever_tool(
