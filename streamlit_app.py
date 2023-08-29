@@ -64,7 +64,7 @@ if 'user_name' not in st.session_state:
 tool = create_retriever_tool(
     retriever, 
     "search_car_dealership_inventory",
-    "Searches and returns documents regarding the car inventory."
+    "Searches and returns documents regarding the car inventory and Input should be a single string strictly."
 )
 tools = [tool]
 llm = ChatOpenAI(model="gpt-3.5-turbo-16k", temperature = 0)
