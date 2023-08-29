@@ -67,7 +67,7 @@ tool = create_retriever_tool(
     "Searches and returns documents regarding the car inventory."
 )
 tools = [tool]
-llm = ChatOpenAI(temperature = 0)
+llm = OpenAI(model="gpt-3.5"temperature=0)
 memory_key = "history"
 from langchain.agents.openai_functions_agent.agent_token_buffer_memory import AgentTokenBufferMemory
 memory = AgentTokenBufferMemory(memory_key=memory_key, llm=llm)
